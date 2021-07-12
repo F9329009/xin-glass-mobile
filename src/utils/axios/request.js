@@ -43,6 +43,8 @@ instance.interceptors.response.use(
     const { status: code } = response;
     // 判断登录状态
     if (response.data.meta.status === 1) {
+      // 清除失效的 Token
+      window.localStorage.removeItem("token");
       Toast.info(
         "您还未登录,3秒后跳转到登录页面……",
         3,

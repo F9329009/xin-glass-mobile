@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Redirect } from "react-router-dom";
 import { List, InputItem, Flex, Button, WingBlank, WhiteSpace, Toast } from "antd-mobile";
 
 import { httpPost } from "../../utils/axios/http";
@@ -45,7 +46,7 @@ const Login = props => {
     }
   }, [phone]);
 
-  // // 密码校验
+  // 密码校验
   useEffect(() => {
     if (password.trim().length <= 0 || validator.isStrongPassword(password.trim(), passwordOptions)) {
       setPasswordError(false);
@@ -53,6 +54,17 @@ const Login = props => {
       setPasswordError(true);
     }
   }, [password]);
+
+  // 校验是否有 token
+  useEffect(() => {
+    // 获取 token 令牌
+    const token = window.localStorage.getItem("token");
+    // 如果有则跳转到后台首页
+    if (!!token) {
+      Toast.success("您已登录，正在跳转到首页……");
+      props.history.push("/admin");
+    }
+  }, []);
 
   // 注册
   const registerCilck = () => {

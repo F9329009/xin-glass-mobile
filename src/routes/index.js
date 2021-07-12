@@ -7,6 +7,8 @@ import Admin from "../pages/Admin";
 import Menu from "../pages/Menu";
 import User from "../pages/User";
 
+import Ordertotal from "../pages/Ordertotal";
+
 const routes = [
   {
     path: "/",
@@ -89,6 +91,14 @@ const routes = [
             meta: {
               title: "我的",
               tabBar: true,
+            },
+          },
+          {
+            path: "/admin/alionerp/ordertotal",
+            component: Ordertotal,
+            meta: {
+              title: "订单统计",
+              tabBar: false,
             },
           },
         ],

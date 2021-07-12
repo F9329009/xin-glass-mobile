@@ -4,7 +4,7 @@ import { Accordion, Grid } from "antd-mobile";
 import { httpGet } from "../../utils/axios/http";
 import { publicApi } from "../../api";
 
-function Menu() {
+function Menu(props) {
   // 导航列表
   const [navList, setNavList] = useState([]);
 
@@ -12,7 +12,7 @@ function Menu() {
   const getNavList = () => {
     httpGet(publicApi.NavList)
       .then(res => {
-        console.log(res, res.list);
+        console.log("getNavList", res);
         if (res.meta.status === 200) {
           setNavList(res.message.list);
           console.log(res.message.list);
@@ -48,8 +48,7 @@ function Menu() {
 
   //#region 渲染二级目录
   const renderMenu2 = data => {
-    console.log(data);
-    return <Grid data={data} columnNum={3} hasLine={true} square={false} activeStyle={false} renderItem={item => <div>{item.menu_name}</div>} />;
+    return <Grid data={data} columnNum={3} hasLine={true} square={false} activeStyle={false} renderItem={item => <div onClick={() => props.history.push(item.url)}>{item.menu_name}</div>} />;
   };
   //#endregion
 
