@@ -29,12 +29,12 @@ jobs:
 
       # 下载依赖并编译
       # vue项目为npm run build
-      # react项目为npm run-script build
+      # react项目为npm react-scripts build
       - name: npm install and build 🔧
         # 执行下载和编译命令
         run: |
           npm install
-          npm run-script build
+          npm react-scripts build
         env:
           CI: true
 
