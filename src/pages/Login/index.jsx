@@ -96,7 +96,23 @@ const Login = props => {
             Toast.success("登录成功", 3, null, false);
             // 保存 token
             localStorage.setItem("token", res.message.token);
-            // 跳转到首页
+            // 保存公司名称和公司简称
+            localStorage.setItem("company_id", res.message.company_id);
+            localStorage.setItem("company_name", res.message.company_name);
+            localStorage.setItem("company_mini_name", res.message.company_mini_name);
+
+            // 取出重定向路径
+            if (props.location.search.length > 0) {
+              const searchData = new URLSearchParams(props.location.search);
+              const redirect = searchData.get("redirect");
+
+              // 判断是否需要重定向
+              if (redirect) {
+                return props.history.push(redirect);
+              }
+            }
+
+            // 没有重定向路径默认跳转到后台首页
             props.history.push("/admin");
           }
         })

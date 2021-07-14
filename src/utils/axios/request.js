@@ -50,7 +50,7 @@ instance.interceptors.response.use(
         3,
         () => {
           // token 无效 跳转到登录页面
-          window.location.pathname = "/login";
+          window.location.pathname = `/login?redirect=${window.location.pathname}`;
         },
         true
       );

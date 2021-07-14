@@ -7,9 +7,10 @@ function User(props) {
     props.history.push("/login");
   };
   //#endregion
+
   return (
     <div>
-      <h1>User</h1>
+      <h1>用户</h1>
       <WingBlank>
         <Button type="warning" onClick={Logout}>
           退出登录

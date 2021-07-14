@@ -14,7 +14,7 @@ const App = props => {
     // 如果没有 Token 并且不在登录页面则跳转到登录页面
     if (!!!token && props.location.pathname !== "/login") {
       Toast.info("您还未登录,正在跳转到登录页面……", 3, null, true);
-      props.history.push("/login");
+      props.history.push(`/login?redirect=${props.location.pathname}`);
     }
     // 动态设置 Title
     let title = "管理系统";
