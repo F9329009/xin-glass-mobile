@@ -47,7 +47,7 @@ jobs:
           # 服务器SSH免密登陆秘钥
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
           # --delete 参数表示先删除部署路径的所有文件
-          ARGS: "-rltgoDzvO"
+          ARGS: "-rltgoDzvO --delete"
           # Vue CLI默认打包到 dist 目录
           # React 默认打包到 build 目录
           SOURCE: "build/"
