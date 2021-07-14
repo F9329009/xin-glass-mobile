@@ -60,7 +60,18 @@ const Login = props => {
     const token = window.localStorage.getItem("token");
     // 如果有则跳转到后台首页
     if (!!token) {
-      Toast.success("您已登录，正在跳转……");
+      Toast.success("您已登录，正在跳转……", 1);
+      // 取出重定向路径
+      if (props.location.search.length > 0) {
+        const searchData = new URLSearchParams(props.location.search);
+        const redirect = searchData.get("redirect");
+
+        // 判断是否需要重定向
+        if (redirect) {
+          return props.history.push(redirect);
+        }
+      }
+      // 没有重定向路径默认跳转到后台首页
       props.history.push("/admin");
     }
   }, []);
@@ -111,7 +122,6 @@ const Login = props => {
                 return props.history.push(redirect);
               }
             }
-
             // 没有重定向路径默认跳转到后台首页
             props.history.push("/admin");
           }

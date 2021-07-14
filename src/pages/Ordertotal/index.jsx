@@ -32,7 +32,7 @@ const Ordertotal = props => {
           if (res.message.data.length <= 0) {
             Toast.offline("没有找到数据！", 3);
           } else {
-            Toast.success(`共找到 ${res.message.data.length} 条数据`, 3, null, false);
+            Toast.success(`查询到 ${res.message.data.length} 条数据`, 3, null, false);
           }
           // 统计
           const list = [];
