@@ -18,7 +18,7 @@ function Sticky(props) {
     if (top < 0) {
       // 吸顶
       contentEl.classList.add(styles.fixed);
-      placeholderEl.style.height = `${props.height}px`;
+      placeholderEl.style.height = `${props.height || 0}px`;
     } else {
       // 取消吸顶
       contentEl.classList.remove(styles.fixed);
@@ -46,7 +46,7 @@ function Sticky(props) {
 }
 
 Sticky.propTypes = {
-  height: PropTypes.number.isRequired,
+  height: PropTypes.number,
 };
 
 export default Sticky;
