@@ -13,7 +13,7 @@ function NavHeader(props) {
     <NavBar
       className={[styles.navBar, props.className || ""].join(" ")}
       mode={props.mode}
-      icon={props.icon || <Icon type="left" />}
+      icon={props.icon || <Icon type="left" color="#fff" />}
       onLeftClick={props.onLeftClick || defaultLeftClick}
       rightContent={props.rightContent}
       style={props.style}

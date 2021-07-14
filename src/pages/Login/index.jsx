@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { Redirect } from "react-router-dom";
 import { List, InputItem, Flex, Button, WingBlank, WhiteSpace, Toast } from "antd-mobile";
 
 import { httpPost } from "../../utils/axios/http";
@@ -61,7 +60,7 @@ const Login = props => {
     const token = window.localStorage.getItem("token");
     // 如果有则跳转到后台首页
     if (!!token) {
-      Toast.success("您已登录，正在跳转到首页……");
+      Toast.success("您已登录，正在跳转……");
       props.history.push("/admin");
     }
   }, []);

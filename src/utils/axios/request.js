@@ -49,8 +49,7 @@ instance.interceptors.response.use(
         "您还未登录,3秒后跳转到登录页面……",
         3,
         () => {
-          // token 无效 设置自动登录为 false 并跳转到登录页面
-          // window.localStorage.setItem("AutoLogin", "0");
+          // token 无效 跳转到登录页面
           window.location.pathname = "/login";
         },
         true

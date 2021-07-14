@@ -15,7 +15,6 @@ function Menu(props) {
         console.log("getNavList", res);
         if (res.meta.status === 200) {
           setNavList(res.message.list);
-          console.log(res.message.list);
         }
       })
       .catch(err => {

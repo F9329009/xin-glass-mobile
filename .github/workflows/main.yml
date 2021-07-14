@@ -1,0 +1,56 @@
+# 工作流名称，不设置的话默认取配置文件名
+name: GitHub Actions Deploy xin-glass-mobile main
+# 指定触发 workflow 的条件
+# 指定触发事件时，可以限定分支或标签
+# 当前是 只有 main 分支上触发 push 事件时才执行工作流任务
+on:
+  push:
+    branches:
+      - main
+# 工作流执行的一个或多个任务
+jobs:
+  # 任务名称
+  build:
+    # 任务运行的容器类型（虚拟机环境）
+    runs-on: ubuntu-latest
+    # 判断在指定用户或者组织的指定仓库中才执行
+    if: github.repository == 'F9329009/xin-glass-mobile'
+    # 判断在指定组织中才执行
+    # if: github.repository_owner == '组织名'
+    # 任务执行的步骤
+    steps:
+      # 切换分支
+      - name: Checkout 🛎️
+        # 使用的操作 actions，可以使用公共仓库，本地仓库，别人的仓库的action
+        # 拉取代码
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+
+      # 下载依赖并编译
+      - name: npm install and build 🔧
+        # 执行下载和编译命令
+        run: |
+          npm install
+          npm run build
+        env:
+          CI: true
+
+      # 部署
+      - name: Deploy 🚀
+        # 构建
+        uses: easingthemes/ssh-deploy@v2.1.5
+        # 该步骤所需的环境变量
+        env:
+          # 服务器SSH免密登陆秘钥
+          SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
+          # --delete 参数表示先删除部署路径的所有文件
+          ARGS: "-rltgoDzvO"
+          # React 默认打包到 build 目录
+          SOURCE: "build/"
+          # 服务器地址(IP或者域名)
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          # 服务器用户名
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          # 服务器网站的部署路径
+          TARGET: ${{ secrets.REMOTE_TARGET }}

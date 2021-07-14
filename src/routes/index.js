@@ -14,6 +14,7 @@ const routes = [
     path: "/",
     component: App,
     meta: {
+      title: "首页",
       // TabBar 列表
       tabBarList: [
         {
