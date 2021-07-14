@@ -29,14 +29,14 @@ jobs:
 
       # 下载依赖并编译
       # vue项目为npm run build
-      # react项目为npm react-scripts build
+      # react项目为npm run-script build
       - name: npm install and build 🔧
         # 执行下载和编译命令
         run: |
           npm install
-          npm react-scripts build
+          npm run-script build
         env:
-          CI: true
+          CI: false
 
       # 部署
       - name: Deploy 🚀
@@ -48,6 +48,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.ACCESS_TOKEN }}
           # --delete 参数表示先删除部署路径的所有文件
           ARGS: "-rltgoDzvO"
+          # Vue CLI默认打包到 dist 目录
           # React 默认打包到 build 目录
           SOURCE: "build/"
           # 服务器地址(IP或者域名)
