@@ -169,7 +169,6 @@ const Ordertotal = props => {
       ordertotalData.length <= 0 || (
         <AutoSizer>
           {({ width, height }) => {
-            console.log(width, height, height - 160 - accordionActiveKey === "total" ? 185 : 44, accordionActiveKey === "total" ? 185 : 44, ordertotalData.length, accordionActiveKey);
             return (
               <VList
                 // ref={registerChild}
