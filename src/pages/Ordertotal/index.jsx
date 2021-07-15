@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Accordion, Grid, List, Calendar, Button, WingBlank, WhiteSpace, Toast } from "antd-mobile";
 import { List as VList, AutoSizer } from "react-virtualized";
 
@@ -65,6 +65,10 @@ const Ordertotal = props => {
     setDate(newDate);
     setCalendarShow(false);
   };
+  useEffect(() => {
+    // 日期改变时查询数据
+    getOrdertotal();
+  }, [date]);
 
   // 取消
   const onCancel = () => {
@@ -85,14 +89,6 @@ const Ordertotal = props => {
         >
           查询日期
         </List.Item>
-        {/* 确定按钮 */}
-        <WhiteSpace />
-        <WingBlank>
-          <Button type="primary" onClick={getOrdertotal}>
-            查询
-          </Button>
-        </WingBlank>
-        <WhiteSpace />
         {/* 选择框 */}
         <Calendar
           visible={calendarShow}
@@ -175,7 +171,7 @@ const Ordertotal = props => {
                 // 视口的宽度
                 width={width}
                 // 视口的高度
-                height={accordionActiveKey === "total" ? height - 160 - 185 : height - 160 - 44}
+                height={accordionActiveKey === "total" ? height - 90 - 185 : height - 90 - 44}
                 // 列表项的行数
                 rowCount={ordertotalData.length}
                 // rowCount={9}
@@ -200,7 +196,15 @@ const Ordertotal = props => {
       <Sticky>
         <div className="ordertotal-sticky">
           {/* 顶部导航栏 */}
-          <NavHeader mode="light" children="订单统计" />
+          <NavHeader
+            mode="light"
+            children="订单统计"
+            rightContent={
+              <span style={{ color: "#fff" }} onClick={getOrdertotal}>
+                刷新
+              </span>
+            }
+          />
           {/* 查询条件 */}
           {renderCalendar()}
           <Accordion
