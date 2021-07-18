@@ -8,6 +8,7 @@ import Menu from "../pages/Menu";
 import User from "../pages/User";
 
 import Ordertotal from "../pages/Ordertotal";
+import Patch from "../pages/Patch";
 
 const routes = [
   {
@@ -99,6 +100,14 @@ const routes = [
             component: Ordertotal,
             meta: {
               title: "订单统计",
+              tabBar: false,
+            },
+          },
+          {
+            path: "/admin/alionerp/patch",
+            component: Patch,
+            meta: {
+              title: "补片明细",
               tabBar: false,
             },
           },

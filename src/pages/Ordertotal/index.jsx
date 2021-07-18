@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Accordion, Grid, List, Calendar, Button, WingBlank, WhiteSpace, Toast } from "antd-mobile";
+import { Accordion, Grid, Toast } from "antd-mobile";
 import { List as VList, AutoSizer } from "react-virtualized";
 
 import { httpGet } from "../../utils/axios/http";
 import { alionErp } from "../../api";
 
 import DateFormat from "../../utils/DateFormat";
+import DateSelect from "../../components/DateSelect";
 
 import Sticky from "../../components/Sticky";
 import NavHeader from "../../components/NavHeader";
@@ -14,16 +15,19 @@ import OrdertotalItem from "../../components/OrdertotalItem";
 import "./index.css";
 
 const Ordertotal = props => {
+  // 日期
+  const [date, setDate] = useState([new Date()]);
+
+  //#region 获取订单统计数据
   // 订单统计数据
   const [ordertotalData, setOrderTotalData] = useState([]);
   // 合计
   const [ordertotalTotal, setOrdertotalTotal] = useState([]);
   const totalList = { TotalNum: "订单数量", TotalQty: "成品数量", TotalArea: "面积", TotalConvertArea: "面积(5)", TotalAmt: "金额", TotalPrePayAmt: "预付定金" };
-
-  //#region 获取订单统计数据
+  // 发送请求
   const getOrdertotal = () => {
     httpGet(alionErp.OrderTotal, {
-      date: DateFormat(date, "yyyy-MM-dd"),
+      date: DateFormat(date[0], "yyyy-MM-dd"),
     })
       .then(res => {
         console.log("getOrdertotal", res);
@@ -51,74 +55,10 @@ const Ordertotal = props => {
         console.log(err);
       });
   };
-  //#endregion
-
-  //#region 日期选择
-  // 日期
-  const [date, setDate] = useState(new Date());
-  // 是否显示
-  const [calendarShow, setCalendarShow] = useState(false);
-
-  // 确认
-  const onConfirm = newDate => {
-    console.log("newDate", newDate);
-    setDate(newDate);
-    setCalendarShow(false);
-  };
   useEffect(() => {
     // 日期改变时查询数据
     getOrdertotal();
   }, [date]);
-
-  // 取消
-  const onCancel = () => {
-    setCalendarShow(false);
-  };
-
-  // 渲染
-  const renderCalendar = () => {
-    return (
-      <>
-        {/* 选择列表 */}
-        <List.Item
-          extra={DateFormat(date, "yyyy-MM-dd") || "选择"}
-          arrow="horizontal"
-          onClick={() => {
-            setCalendarShow(true);
-          }}
-        >
-          查询日期
-        </List.Item>
-        {/* 选择框 */}
-        <Calendar
-          visible={calendarShow}
-          type="one"
-          defaultValue={[date || new Date(), date || new Date()]}
-          onCancel={onCancel}
-          onConfirm={onConfirm}
-          showShortcut={true}
-          renderShortcut={select => (
-            <div className="calendar-shortcut">
-              <span
-                onClick={() => {
-                  select(new Date(new Date() - 86400000), new Date(new Date() - 86400000));
-                }}
-              >
-                昨天
-              </span>
-              <span
-                onClick={() => {
-                  select(new Date(), new Date());
-                }}
-              >
-                今天
-              </span>
-            </div>
-          )}
-        />
-      </>
-    );
-  };
   //#endregion
 
   //#region 渲染统计数据
@@ -150,8 +90,6 @@ const Ordertotal = props => {
   //#endregion
 
   //#region 渲染详情信息
-  // ordertotalData.map(item => <OrdertotalItem key={item.ChsName} name={item.ChsName} qty={item.Qty} SumProductArea={item.SumProductArea} SumConvertProductArea={item.SumConvertProductArea} />
-
   // 渲染列表项
   const renderInfoItem = ({ key, index, style }) => {
     const item = ordertotalData[index];
@@ -167,14 +105,12 @@ const Ordertotal = props => {
           {({ width, height }) => {
             return (
               <VList
-                // ref={registerChild}
                 // 视口的宽度
                 width={width}
                 // 视口的高度
-                height={accordionActiveKey === "total" ? height - 90 - 185 : height - 90 - 44}
+                height={height - 90 - (accordionActiveKey === "total" ? 185 : 44)}
                 // 列表项的行数
                 rowCount={ordertotalData.length}
-                // rowCount={9}
                 // 每一行的高度
                 rowHeight={120}
                 // 渲染列表项中的每一行
@@ -192,33 +128,31 @@ const Ordertotal = props => {
 
   return (
     <div className="ordertotal-box">
+      {/* 顶部导航栏 */}
+      <NavHeader
+        mode="light"
+        children="订单统计"
+        rightContent={
+          <span style={{ color: "#fff" }} onClick={getOrdertotal}>
+            刷新
+          </span>
+        }
+      />
       {/* 吸顶组件 */}
       <Sticky>
-        <div className="ordertotal-sticky">
-          {/* 顶部导航栏 */}
-          <NavHeader
-            mode="light"
-            children="订单统计"
-            rightContent={
-              <span style={{ color: "#fff" }} onClick={getOrdertotal}>
-                刷新
-              </span>
-            }
-          />
-          {/* 查询条件 */}
-          {renderCalendar()}
-          <Accordion
-            activeKey={accordionActiveKey}
-            accordion
-            openAnimation={{}}
-            onChange={key => {
-              changeAccordionKey(key);
-            }}
-          >
-            {/* 统计内容渲染 */}
-            {ordertotalTotal.length <= 0 || renderTotal()}
-          </Accordion>
-        </div>
+        {/* 查询条件 */}
+        <DateSelect type="one" callback={setDate} />
+        <Accordion
+          activeKey={accordionActiveKey}
+          accordion
+          openAnimation={{}}
+          onChange={key => {
+            changeAccordionKey(key);
+          }}
+        >
+          {/* 统计内容渲染 */}
+          {ordertotalTotal.length <= 0 || renderTotal()}
+        </Accordion>
       </Sticky>
       {/* 详情 */}
       {renderInfoList()}
