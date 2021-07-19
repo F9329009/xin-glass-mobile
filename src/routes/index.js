@@ -76,7 +76,6 @@ const routes = [
         routes: [
           {
             path: "/admin",
-            exact: true,
             render: () => <Redirect to={"/admin/menu"} />,
           },
           {

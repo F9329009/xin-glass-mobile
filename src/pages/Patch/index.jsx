@@ -25,16 +25,20 @@ const Patch = () => {
     httpGet(alionErp.Patch, {
       startdate: DateFormat(date[0], "yyyy-MM-dd"),
       enddate: DateFormat(date[1], "yyyy-MM-dd"),
-    }).then(res => {
-      console.log(res);
-      // 弹出提示
-      if (res.message.data.length <= 0) {
-        Toast.offline("没有找到数据！", 3);
-      } else {
-        Toast.success(`查询到 ${res.message.data.length} 条数据`, 3, null, false);
-      }
-      setPatchData(res.message.data);
-    });
+    })
+      .then(res => {
+        console.log(res);
+        // 弹出提示
+        if (res.message.data.length <= 0) {
+          Toast.offline("没有找到数据！", 3);
+        } else {
+          Toast.success(`查询到 ${res.message.data.length} 条数据`, 3, null, false);
+        }
+        setPatchData(res.message.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     getPatch();
