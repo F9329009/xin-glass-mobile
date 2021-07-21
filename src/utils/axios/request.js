@@ -45,15 +45,18 @@ instance.interceptors.response.use(
     if (response.data.meta.status === 1) {
       // 清除失效的 Token
       window.localStorage.removeItem("token");
-      Toast.info(
-        "您还未登录,3秒后跳转到登录页面……",
-        3,
-        () => {
-          // token 无效 跳转到登录页面
-          window.location.pathname = `/login?redirect=${window.location.pathname}`;
-        },
-        true
-      );
+      // 判断是否在登录页面
+      if (window.location.pathname.slice(0, 6) !== "/login")
+        Toast.info(
+          "您还未登录,3秒后跳转到登录页面……",
+          3,
+          () => {
+            // token 无效 跳转到登录页面
+            window.location.state = { redirect: decodeURIComponent(window.location.pathname) };
+            window.location.pathname = `/login`;
+          },
+          true
+        );
     }
 
     // 更新 token

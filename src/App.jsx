@@ -12,9 +12,9 @@ const App = props => {
   useEffect(() => {
     const token = window.localStorage.getItem("token");
     // 如果没有 Token 并且不在登录页面则跳转到登录页面
-    if (!!!token && props.location.pathname !== "/login") {
+    if (!!!token && props.location.pathname.slice(0, 6) !== "/login") {
       Toast.info("您还未登录,正在跳转到登录页面……", 3, null, true);
-      props.history.push(`/login?redirect=${props.location.pathname}`);
+      props.history.push({ pathname: "/login", state: { redirect: decodeURIComponent(props.location.pathname) } });
     }
     // 动态设置 Title
     let title = "管理系统";
@@ -23,8 +23,8 @@ const App = props => {
       if (!!routes.routes) routes.routes.forEach(item => setTitle(item));
       if (routes.path === props.location.pathname && routes.meta && routes.meta.title) title = routes.meta.title + " - 管理系统";
     };
+    // 递归查找标题
     setTitle(props.route);
-    console.log("title", title, props.location.pathname);
     if (title !== "管理系统") {
       document.title = title;
     } else {
