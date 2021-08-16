@@ -58,7 +58,7 @@ const Login = props => {
   useEffect(() => {
     console.log("login props", props);
     // 获取 token 令牌
-    const token = window.localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     // 如果有则跳转到后台首页
     if (!!token) {
       Toast.success("您已登录，正在跳转……", 1);
@@ -70,9 +70,10 @@ const Login = props => {
         const redirect = searchData.get("redirect");
         // 判断是否需要重定向
         if (redirect) return props.history.push({ pathname: "/admin", state: { redirect: decodeURIComponent(redirect) } });
+      } else {
+        // 没有重定向路径默认跳转到后台首页
+        props.history.push({ pathname: "/admin" });
       }
-      // 没有重定向路径默认跳转到后台首页
-      props.history.push({ pathname: "/admin" });
     }
   }, []);
 
