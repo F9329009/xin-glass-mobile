@@ -57,25 +57,32 @@ const Login = props => {
   // 校验是否有 token
   useEffect(() => {
     console.log("login props", props);
+    redirectPage();
+  }, []);
+
+  // 页面重定向
+  const redirectPage = () => {
     // 获取 token 令牌
     const token = localStorage.getItem("token");
     // 如果有则跳转到后台首页
     if (!!token) {
       Toast.success("您已登录，正在跳转……", 1);
-      // 取出 state 里的重定向数据
-      if (props.location.state && props.location.state.redirect) return props.history.push({ pathname: "/admin", state: { redirect: decodeURIComponent(props.location.state.redirect) } });
       // 取出重定向路径
-      if (props.location.search.length > 0) {
-        const searchData = new URLSearchParams(props.location.search);
+      if (!!props.location.state.redirect) {
+        const searchData = new URLSearchParams(props.location.state);
         const redirect = searchData.get("redirect");
-        // 判断是否需要重定向
-        if (redirect) return props.history.push({ pathname: "/admin", state: { redirect: decodeURIComponent(redirect) } });
+        // 判断是否需要重定向(如果为 / 则重定向到 /admin)
+        if (redirect)
+          props.history.push({
+            pathname: decodeURIComponent(redirect) === "/" ? "/admin" : decodeURIComponent(redirect),
+            state: { redirect: decodeURIComponent(redirect) },
+          });
       } else {
         // 没有重定向路径默认跳转到后台首页
         props.history.push({ pathname: "/admin" });
       }
     }
-  }, []);
+  };
 
   // 注册
   const registerCilck = () => {
@@ -84,7 +91,6 @@ const Login = props => {
 
   // 登录
   const loginClick = () => {
-    console.log(phoneError, phone.replace(/\s/g, "").trim(), passwordError, password);
     // 判断校验是否通过
     if (phone.replace(/\s/g, "").length <= 0 || phoneError) {
       Toast.fail("请输入正确的手机号码", 3, null, false);
@@ -113,17 +119,8 @@ const Login = props => {
             localStorage.setItem("company_name", res.message.company_name);
             localStorage.setItem("company_mini_name", res.message.company_mini_name);
 
-            // 取出 state 里的重定向数据
-            if (props.location.state && props.location.state.redirect) return props.history.push({ pathname: "/admin", state: { redirect: decodeURIComponent(props.location.state.redirect) } });
-            // 取出重定向路径
-            if (props.location.search.length > 0) {
-              const searchData = new URLSearchParams(props.location.search);
-              const redirect = searchData.get("redirect");
-              // 判断是否需要重定向
-              if (redirect) return props.history.push({ pathname: "/admin", state: { redirect: decodeURIComponent(redirect) } });
-            }
-            // 没有重定向路径默认跳转到后台首页
-            props.history.push("/admin");
+            // 重定向页面
+            redirectPage();
           }
         })
         .catch(err => console.log(err));

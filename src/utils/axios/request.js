@@ -48,8 +48,8 @@ instance.interceptors.response.use(
       // 判断是否在登录页面
       if (window.location.pathname.slice(0, 6) !== "/login")
         return Toast.info(
-          "您还未登录,3秒后跳转到登录页面……",
-          3,
+          "您还未登录,正在跳转到登录页面……",
+          1,
           () => {
             // token 无效 跳转到登录页面
             window.location.state = { redirect: decodeURIComponent(window.location.pathname) };

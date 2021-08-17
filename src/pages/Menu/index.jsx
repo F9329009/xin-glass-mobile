@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Accordion, Grid } from "antd-mobile";
+import { Accordion, List, Grid } from "antd-mobile";
 
 import { httpGet } from "../../utils/axios/http";
 import { publicApi } from "../../api";
@@ -28,26 +28,24 @@ function Menu(props) {
 
   //#region 渲染一级目录
   const renderMenu1 = () => {
-    return (
-      <Accordion className="my-accordion" accordion openAnimation={{}} onChange={key => console.log(key)}>
-        {navList.map(item => {
-          if (item.children.length > 0) {
-            return (
-              <Accordion.Panel key={item.menu_id} header={item.menu_name}>
-                {item.children.length > 0 ? renderMenu2(item.children) : null}
-              </Accordion.Panel>
-            );
-          }
-          return null;
-        })}
-      </Accordion>
+    return navList.map(
+      item =>
+        item.children.length <= 0 || (
+          <List className="my-list" key={item.menu_id} renderHeader={() => item.menu_name}>
+            {renderMenu2(item.children)}
+          </List>
+        )
     );
   };
   //#endregion
 
   //#region 渲染二级目录
   const renderMenu2 = data => {
-    return <Grid data={data} columnNum={3} hasLine={true} square={false} activeStyle={false} renderItem={item => <div onClick={() => props.history.push(item.url)}>{item.menu_name}</div>} />;
+    return data.map(item => (
+      <List.Item extra={"进入"} arrow="horizontal" onClick={() => props.history.push(item.url)}>
+        {item.menu_name}
+      </List.Item>
+    ));
   };
   //#endregion
 
