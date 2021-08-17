@@ -62,7 +62,7 @@ const Ordertotal = props => {
   //#endregion
 
   //#region 渲染统计数据
-  // 当前激活的模面板
+  // 当前激活的面板
   const [accordionActiveKey, setAccordionActiveKey] = useState("total");
   // 切换面板
   const changeAccordionKey = key => {
