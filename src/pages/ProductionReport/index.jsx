@@ -131,6 +131,7 @@ const ProductionReport = () => {
           openAnimation={{}}
           onChange={key => {
             changeAccordionKey(key);
+            console.log(accordionActiveKey);
           }}
         >
           {/* 统计内容渲染 */}
@@ -141,7 +142,7 @@ const ProductionReport = () => {
       <AutoSizer>
         {({ width, height }) => {
           return (
-            <div style={{ width, height: height - 227 }}>
+            <div style={{ width, height: height - (accordionActiveKey === "total" ? 227 : 133) }}>
               <Tabs tabs={tabs} initialPage={0} swipeable={false} usePaged={false}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", backgroundColor: "#fff" }}>
                   {/* 工序统计侧边栏 */}
