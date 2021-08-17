@@ -68,7 +68,7 @@ const Login = props => {
     if (!!token) {
       Toast.success("您已登录，正在跳转……", 1);
       // 取出重定向路径
-      if (!!props.location.state.redirect) {
+      if (!!props.location.state && !!props.location.state.redirect) {
         const searchData = new URLSearchParams(props.location.state);
         const redirect = searchData.get("redirect");
         // 判断是否需要重定向(如果为 / 则重定向到 /admin)
